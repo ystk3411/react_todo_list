@@ -86,7 +86,6 @@ export default function App() {
           onChange={onInputValue}
         />
         <button onClick={onClickAdd} className="add">作成</button>
-        {todoText}
       <div id="js-todo-list" className="todo-list">
         <ul>
           {todoList.map((todo) => (
