@@ -5,8 +5,6 @@ import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <Router basename="/react_todo_list">
-      <App />
-    </Router>
+    <App />
   </StrictMode>,
 )
