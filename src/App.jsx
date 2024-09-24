@@ -15,8 +15,7 @@ export default function App() {
       id,
       title: todoText,
       completed:false,
-      isEdit:false,
-      isCheck:false
+      isEdit:false
     };
 
     todoList.forEach(todo => {
@@ -34,23 +33,24 @@ export default function App() {
 
   // 編集フォームを表示する関数
   const onClickEdit = (id) => {
-    for (const todo of todoList) {
-      if (id === todo.id){
-        todo.isEdit = true
-        setTodoList([...todoList])
+    const updatedTodoList = todoList.map(todo => {
+      if (todo.id === id) {
+        return { ...todo, isEdit: true }
       }
-    }
+      return todo
+    })
+    setTodoList(updatedTodoList)
   }
 
   // リストのタイトルを編集する関数
   const onClickUpdate = (id,editTitle) => {
-    for (const todo of todoList) {
-      if (id === todo.id){
-        todo.title = editTitle
-        todo.isEdit = false
-        setTodoList([...todoList])
+    const editTodoList = todoList.map(todo => {
+      if (todo.id === id) {
+        return {...todo, title: editTitle, isEdit: false,}
       }
-    }
+      return todo
+    })
+    setTodoList(editTodoList)
   }
 
   // リストから削除する関数
@@ -64,13 +64,14 @@ export default function App() {
 
   // チェックボックス押下時に完了、未完了を切り替える関数
   const onChangeCheckBox = (id) => {
-    for (const todo of todoList) {
-      if (id === todo.id){
-        todo.isCheck = todo.isCheck ? false : true
-        todo.completed = todo.isCheck ? true : false
-        setTodoList([...todoList])
+    const checkList = todoList.map(todo => {
+      if (todo.id === id) {
+        const isCompleted = todo.completed ? false :true
+        return {...todo, completed: isCompleted}
       }
-    }
+      return todo
+    })
+    setTodoList(checkList)
   }
 
   return (
@@ -89,13 +90,13 @@ export default function App() {
       <div id="js-todo-list" className="todo-list">
         <ul>
           {todoList.map((todo) => (
-            <li key={todo.id} className={``}>
+            <li key={todo.id}>
               {todo.isEdit 
                 ? 
                 <EditForm text={todo.title} id={todo.id} update={onClickUpdate}/>
                 : 
                 <div>
-                  <input type="checkbox" className='checkbox' checked={todo.isCheck} onChange={ () => onChangeCheckBox(todo.id)}></input>
+                  <input type="checkbox" className='checkbox' checked={todo.completed} onChange={ () => onChangeCheckBox(todo.id)}></input>
                   {todo.title}
                   <button onClick={() => onClickEdit(todo.id)} className="edit">編集</button>
                   <button onClick={() => onClickDelete(todo.id)}>削除</button>
